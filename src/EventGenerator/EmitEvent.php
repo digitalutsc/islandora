@@ -207,6 +207,7 @@ abstract class EmitEvent extends ConfigurableActionBase implements ContainerFact
       '#description' => t('Type of event to emit'),
       '#options' => [
         'Create' => t('Create'),
+        'Version' => t('Version'),
         'Update' => t('Update'),
         'Delete' => t('Delete'),
         'Generate Derivative' => t('Generate Derivative'),

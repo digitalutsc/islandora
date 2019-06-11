@@ -104,6 +104,11 @@ class EventGenerator implements EventGeneratorInterface {
       $event["type"] = ucfirst($data["event"]);
       $event["summary"] = ucfirst($data["event"]) . " a " . ucfirst($entity_type);
     }
+    if ($data["event"] == "Update"){
+      $event["object"]["createVersion"] = TRUE;
+    } else {
+      $event["object"]["createVersion"] = FALSE;
+    }
 
     // Add REST links for non-file entities.
     if ($entity_type != 'file') {
