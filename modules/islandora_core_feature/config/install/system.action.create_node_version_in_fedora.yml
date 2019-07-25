@@ -6,8 +6,8 @@ dependencies:
       - islandora_core_feature
   module:
     - islandora
-id: version_node_in_fedora
-label: 'Version Node in Fedora'
+id: create_node_version_in_fedora
+label: 'Create Node Version in Fedora'
 type: node
 plugin: emit_node_event
 configuration:
