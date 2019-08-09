@@ -103,7 +103,7 @@ class EventGenerator implements EventGeneratorInterface
     if ($entity->getEntityType()->isRevisionable()) {
       $isNewRev = $this->isNewRevision($entity);
       if ($isNewRev) {
-        $event["object"]["type"] = "Version";
+        $event["object"]["isNewVersion"] = $isNewRev;
       }
     }
 
