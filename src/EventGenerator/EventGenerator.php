@@ -154,12 +154,16 @@ class EventGenerator implements EventGeneratorInterface
   }
 
   /**
-   * @param $entity EntityInterface
-   * returns Boolean
+   * Method to check if an entity is a new revision.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   Drupal Entity.
+   *
+   * @return bool
+   *   Is new version.
    */
   protected function isNewRevision(EntityInterface $entity)
   {
-    // revisions tab.
     $bundle_entity_type = $entity->getEntityType()->getBundleEntityType();
     $bundle_entity = \Drupal::entityTypeManager()->getStorage($bundle_entity_type)->load($entity->bundle());
     return $bundle_entity->shouldCreateNewRevision();
