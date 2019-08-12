@@ -12,8 +12,7 @@ use Drupal\user\UserInterface;
  *
  * Provides Activity Stream 2.0 serialized events.
  */
-class EventGenerator implements EventGeneratorInterface
-{
+class EventGenerator implements EventGeneratorInterface {
 
   /**
    * Islandora utils.
@@ -37,8 +36,7 @@ class EventGenerator implements EventGeneratorInterface
    * @param \Drupal\islandora\MediaSource\MediaSourceService $media_source
    *   Media source service.
    */
-  public function __construct(IslandoraUtils $utils, MediaSourceService $media_source)
-  {
+  public function __construct(IslandoraUtils $utils, MediaSourceService $media_source) {
     $this->utils = $utils;
     $this->mediaSource = $media_source;
   }
@@ -46,8 +44,7 @@ class EventGenerator implements EventGeneratorInterface
   /**
    * {@inheritdoc}
    */
-  public function generateEvent(EntityInterface $entity, UserInterface $user, array $data)
-  {
+  public function generateEvent(EntityInterface $entity, UserInterface $user, array $data) {
 
     $user_url = $this->utils->getEntityUrl($user);
 
@@ -56,7 +53,8 @@ class EventGenerator implements EventGeneratorInterface
     if ($entity_type == 'file') {
       $entity_url = $this->utils->getDownloadUrl($entity);
       $mimetype = $entity->getMimeType();
-    } else {
+    }
+    else {
       $entity_url = $this->utils->getEntityUrl($entity);
       $mimetype = 'text/html';
     }
@@ -95,7 +93,8 @@ class EventGenerator implements EventGeneratorInterface
     if ($data["event"] == "Generate Derivative") {
       $event["type"] = "Activity";
       $event["summary"] = $data["event"];
-    } else {
+    }
+    else {
       $event["type"] = ucfirst($data["event"]);
       $event["summary"] = ucfirst($data["event"]) . " a " . ucfirst($entity_type);
     }
@@ -162,10 +161,10 @@ class EventGenerator implements EventGeneratorInterface
    * @return bool
    *   Is new version.
    */
-  protected function isNewRevision(EntityInterface $entity)
-  {
+  protected function isNewRevision(EntityInterface $entity) {
     $bundle_entity_type = $entity->getEntityType()->getBundleEntityType();
     $bundle_entity = \Drupal::entityTypeManager()->getStorage($bundle_entity_type)->load($entity->bundle());
     return $bundle_entity->shouldCreateNewRevision();
   }
+
 }
