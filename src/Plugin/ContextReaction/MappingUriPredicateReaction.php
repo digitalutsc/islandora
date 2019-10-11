@@ -123,8 +123,8 @@ class MappingUriPredicateReaction extends NormalizerAlterReaction {
     $config = $this->getConfiguration();
     $form[self::URI_PREDICATE] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Drupal URI predicate'),
-      '#description' => $this->t("The Drupal object's URI will be added to the resource with this predicate. Must use a defined prefix."),
+      '#title' => $this->t('Self-reference predicate'),
+      '#description' => $this->t("When creating the JSON-LD for this Drupal entity, add a relationship from the entity to itself using this predicate. It must use a defined prefix."),
       '#default_value' => isset($config[self::URI_PREDICATE]) ? $config[self::URI_PREDICATE] : '',
       '#size' => 35,
     ];
