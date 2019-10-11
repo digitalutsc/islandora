@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @ContextReaction(
  *   id = "islandora_map_uri_predicate",
- *   label = @Translation("Map URI to predicate")
+ *   label = @Translation("JSON-LD self-reference")
  * )
  */
 class MappingUriPredicateReaction extends NormalizerAlterReaction {
@@ -69,7 +69,7 @@ class MappingUriPredicateReaction extends NormalizerAlterReaction {
    * {@inheritdoc}
    */
   public function summary() {
-    return $this->t('Map Drupal URI to configured predicate.');
+    return $this->t('When creating the JSON-LD for this Drupal entity, add a relationship to itself using this predicate.');
   }
 
   /**
