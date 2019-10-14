@@ -13,8 +13,9 @@ use Drupal\islandora\IslandoraUtils;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Create a self-reference in JSON-LD RDF context reaction. Formerly called
- * "Map URI to predicate" context reaction. Renamed for clarity.
+ * Create a self-reference in RDF when creating JSON-LD.
+ *
+ * Formerly called "Map URI to predicate". Renamed for clarity.
  *
  * @ContextReaction(
  *   id = "islandora_map_uri_predicate",
