@@ -99,6 +99,13 @@ class EventGenerator implements EventGeneratorInterface {
       $event["summary"] = ucfirst($data["event"]) . " a " . ucfirst($entity_type);
     }
 
+    if ($entity->getEntityType()->isRevisionable()) {
+      $isNewRev = $this->isNewRevision($entity);
+      if ($isNewRev) {
+        $event["object"]["isNewVersion"] = $isNewRev;
+      }
+    }
+
     // Add REST links for non-file entities.
     if ($entity_type != 'file') {
       $event['object']['url'][] = [
@@ -143,6 +150,21 @@ class EventGenerator implements EventGeneratorInterface {
     }
 
     return json_encode($event);
+  }
+
+  /**
+   * Method to check if an entity is a new revision.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   Drupal Entity.
+   *
+   * @return bool
+   *   Is new version.
+   */
+  protected function isNewRevision(EntityInterface $entity) {
+    $bundle_entity_type = $entity->getEntityType()->getBundleEntityType();
+    $bundle_entity = \Drupal::entityTypeManager()->getStorage($bundle_entity_type)->load($entity->bundle());
+    return $bundle_entity->shouldCreateNewRevision();
   }
 
 }
