@@ -98,13 +98,12 @@ class EventGenerator implements EventGeneratorInterface {
       $event["type"] = ucfirst($data["event"]);
       $event["summary"] = ucfirst($data["event"]) . " a " . ucfirst($entity_type);
     }
-
+    $isNewRev = FALSE;
     if ($entity->getEntityType()->isRevisionable()) {
+      \Drupal::logger('islandora')->notice('its revisionable');
       $isNewRev = $this->isNewRevision($entity);
-      if ($isNewRev) {
-        $event["object"]["isNewVersion"] = $isNewRev;
-      }
     }
+    $event["object"]["isNewVersion"] = $isNewRev;
 
     // Add REST links for non-file entities.
     if ($entity_type != 'file') {
@@ -162,9 +161,8 @@ class EventGenerator implements EventGeneratorInterface {
    *   Is new version.
    */
   protected function isNewRevision(EntityInterface $entity) {
-    $bundle_entity_type = $entity->getEntityType()->getBundleEntityType();
-    $bundle_entity = \Drupal::entityTypeManager()->getStorage($bundle_entity_type)->load($entity->bundle());
-    return $bundle_entity->shouldCreateNewRevision();
+    $revision_ids = \Drupal::entityTypeManager()->getStorage($entity->getEntityTypeId())->revisionIds($entity);
+    return count($revision_ids) > 1;
   }
 
 }
