@@ -209,6 +209,27 @@ class IslandoraSettingsForm extends ConfigFormBase {
       );
     }
 
+    // Validate Fedora URL.
+    $fedora_url = $form_state->getValue(self::FEDORA_URL);
+    $client = \Drupal::httpClient();
+    $code = "";
+    try {
+      $response = $client->get($fedora_url);
+      $code = $response->getStatusCode();
+    }
+    catch (\Exception $e) {
+      $code = $e->getMessage();
+    }
+    if ($code != "200") {
+      $form_state->setErrorByName(
+        self::FEDORA_URL,
+        $this->t(
+          'Cannot connect to Fedora URL @url',
+          ['@url' => $fedora_url]
+        )
+      );
+    }    
+    
   }
 
   /**
