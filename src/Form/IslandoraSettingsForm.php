@@ -24,6 +24,7 @@ class IslandoraSettingsForm extends ConfigFormBase {
   const JWT_EXPIRY = 'jwt_expiry';
   const GEMINI_URL = 'gemini_url';
   const GEMINI_PSEUDO = 'gemini_pseudo_bundles';
+  const FEDORA_URL = 'fedora_url';
 
   /**
    * To list the available bundle types.
@@ -94,6 +95,12 @@ class IslandoraSettingsForm extends ConfigFormBase {
       '#title' => $this->t('Gemini URL'),
       '#default_value' => $config->get(self::GEMINI_URL),
     ];
+
+    $form[self::FEDORA_URL] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Fedora URL'),
+      '#default_value' => $config->get(self::FEDORA_URL),
+    ];    
 
     $selected_bundles = $config->get(self::GEMINI_PSEUDO);
 
