@@ -223,6 +223,7 @@ class IslandoraSettingsForm extends ConfigFormBase {
       ->set(self::BROKER_URL, $form_state->getValue(self::BROKER_URL))
       ->set(self::JWT_EXPIRY, $form_state->getValue(self::JWT_EXPIRY))
       ->set(self::GEMINI_URL, $form_state->getValue(self::GEMINI_URL))
+      ->set(self::FEDORA_URL, $form_state->getValue(self::FEDORA_URL))
       ->set(self::GEMINI_PSEUDO, $pseudo_types)
       ->save();
 
