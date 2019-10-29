@@ -6,6 +6,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfo;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Site\Settings;
 use Drupal\Core\Url;
 use GuzzleHttp\Exception\ConnectException;
 use Islandora\Crayfish\Commons\Client\GeminiClient;
@@ -96,10 +97,14 @@ class IslandoraSettingsForm extends ConfigFormBase {
       '#default_value' => $config->get(self::GEMINI_URL),
     ];
 
+    $flysystem_config = Settings::get('flysystem');
+    $fedora_url = $flysystem_config['fedora']['config']['root'];
+
     $form[self::FEDORA_URL] = [
       '#type' => 'textfield',
       '#title' => $this->t('Fedora URL'),
-      '#default_value' => $config->get(self::FEDORA_URL),
+      '#attributes' => array('readonly' => 'readonly'),
+      '#default_value' => $fedora_url,
     ];    
 
     $selected_bundles = $config->get(self::GEMINI_PSEUDO);
@@ -208,27 +213,6 @@ class IslandoraSettingsForm extends ConfigFormBase {
         $this->t('Must enter Gemini URL before selecting bundles to display a pseudo field on.')
       );
     }
-
-    // Validate Fedora URL.
-    $fedora_url = $form_state->getValue(self::FEDORA_URL);
-    $client = \Drupal::httpClient();
-    $code = "";
-    try {
-      $response = $client->get($fedora_url);
-      $code = $response->getStatusCode();
-    }
-    catch (\Exception $e) {
-      $code = $e->getMessage();
-    }
-    if ($code != "200") {
-      $form_state->setErrorByName(
-        self::FEDORA_URL,
-        $this->t(
-          'Cannot connect to Fedora URL @url',
-          ['@url' => $fedora_url]
-        )
-      );
-    }    
     
   }
 
@@ -244,7 +228,6 @@ class IslandoraSettingsForm extends ConfigFormBase {
       ->set(self::BROKER_URL, $form_state->getValue(self::BROKER_URL))
       ->set(self::JWT_EXPIRY, $form_state->getValue(self::JWT_EXPIRY))
       ->set(self::GEMINI_URL, $form_state->getValue(self::GEMINI_URL))
-      ->set(self::FEDORA_URL, $form_state->getValue(self::FEDORA_URL))
       ->set(self::GEMINI_PSEUDO, $pseudo_types)
       ->save();
 

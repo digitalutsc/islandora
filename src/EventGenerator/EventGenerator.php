@@ -6,7 +6,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\islandora\IslandoraUtils;
 use Drupal\islandora\MediaSource\MediaSourceService;
 use Drupal\user\UserInterface;
-use Drupal\islandora\Form\IslandoraSettingsForm;
+use Drupal\Core\Site\Settings;
 
 /**
  * The default EventGenerator implementation.
@@ -88,9 +88,9 @@ class EventGenerator implements EventGeneratorInterface {
         ],
       ],
     ];
-    
-    $fedora_url = \Drupal::config(IslandoraSettingsForm::CONFIG_NAME)
-      ->get(IslandoraSettingsForm::FEDORA_URL);    
+
+    $flysystem_config = Settings::get('flysystem');
+    $fedora_url = $flysystem_config['fedora']['config']['root'];
     $event["target"] = $fedora_url;    
 
     $entity_type = $entity->getEntityTypeId();
