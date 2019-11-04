@@ -13,11 +13,14 @@
  * @ingroup themeable
  */
 #}
-<h3>Videojs Test {{ testvar }} </h3>
+<h3>Videojs Test </h3>
 <video data-setup="{}" class="video-js vjs-default-skin" preload="{{ player_attributes.preload }}" {{ player_attributes.controls ? 'controls' : '' }} style="width:{{ player_attributes.width }}px;height:{{ player_attributes.height }}px;" {{ player_attributes.autoplay ? 'autoplay' : '' }} {{ player_attributes.loop ? 'loop' : '' }} {{ player_attributes.muted ? 'muted' : '' }}>
   {% for user in items %}
-    <source src="{{ user }}"/>
+    <source src="{{ user }}" type="{{ mimes[ loop.index - 1 ] }}"/>
   {% endfor %}
-<track srclang="en" label="English" kind="captions" src="http://localhost:8000/_flysystem/fedora/2019-02/MEDIATRACK_en.vtt" default />
+
+  {% for transcript_url in transcript_urls %}
+    <track srclang="en" label="English" kind="captions" src="{{ transcript_url }}" default />
+  {% endfor %}
 
 </video>

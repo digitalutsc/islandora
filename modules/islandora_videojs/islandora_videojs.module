@@ -31,7 +31,6 @@ function islandora_videojs_help($route_name, RouteMatchInterface $route_match) {
   }
 }
 
-
 function islandora_videojs_theme_registry_alter(&$theme_registry) {
   $module_path = drupal_get_path('module', 'islandora_videojs');
 
@@ -43,14 +42,61 @@ function islandora_videojs_theme_registry_alter(&$theme_registry) {
 
 
 function islandora_videojs_theme($existing, $type, $theme, $path) {
+  $transcript_urls = get_transcript_urls();
   return array(
     'videojs' => array(
-      'variables' => array('items' => NULL, 'player_attributes' => NULL, 'testvar' => 'testvalue'),
+      'variables' => array('items' => NULL, 'player_attributes' => NULL, 'mimes' => NULL, 'transcript_urls' => $transcript_urls),
       'base hook' => 'videojs'
     ),
   );
 }
 
+
+function get_transcript_urls() {
+  // Get the nid
+  $node = \Drupal::routeMatch()->getParameter('node');
+  $nid = NULL;
+  if ($node instanceof \Drupal\node\NodeInterface) {
+    $nid = $node->id();
+  }
+
+  $transcript_urls = array();
+
+  if ($nid != NULL) {
+    // media url
+    global $base_url;
+    $media_url = $base_url. '/node/' . $nid . '/media';
+
+    try {
+        $media_client = new \GuzzleHttp\Client();
+        $media_response = $media_client->request('GET', $media_url, [
+            'http_errors' => false,
+            'auth' => ['admin', 'islandora'],
+            'query' => ['_format' => 'json']
+        ]);
+        $code = $media_response->getStatusCode();
+
+        if ($code = 200) {
+
+        // Loop through media to find the transcripts
+        $media_list = (string) $media_response->getBody();
+        $media_list = json_decode($media_list, true);
+        foreach ($media_list as $media) {
+          if ($media['field_media_use'][0]['url'] == "/taxonomy/term/20") {
+             $file_url = $media['field_media_file'][0]['url'];
+             $transcript_urls[] = $file_url;
+          }
+        }
+        }
+    }
+    catch (\Exception $e) {
+      \Drupal::logger('islandora_videojs')->notice("Error in getting transcripts: " . $e->getMessage());
+    }
+
+  }
+
+  return $transcript_urls;
+}
 
 
 
