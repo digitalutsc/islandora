@@ -41,6 +41,9 @@ function islandora_videojs_theme_registry_alter(&$theme_registry) {
 }
 
 
+/**
+* videojs theme override
+*/
 function islandora_videojs_theme($existing, $type, $theme, $path) {
   $transcript_urls = get_transcript_urls();
   return array(
@@ -51,7 +54,9 @@ function islandora_videojs_theme($existing, $type, $theme, $path) {
   );
 }
 
-
+/**
+* returns the urls of the transcript of a repository item
+*/
 function get_transcript_urls() {
   // Get the nid
   $node = \Drupal::routeMatch()->getParameter('node');
