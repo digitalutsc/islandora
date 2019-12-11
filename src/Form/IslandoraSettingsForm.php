@@ -104,8 +104,8 @@ class IslandoraSettingsForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Fedora URL'),
       '#attributes' => array('readonly' => 'readonly'),
-      '#default_value' => $fedora_url,
-    ];    
+      '#default_value' => t($fedora_url),
+    ];
 
     $selected_bundles = $config->get(self::GEMINI_PSEUDO);
 
@@ -213,7 +213,6 @@ class IslandoraSettingsForm extends ConfigFormBase {
         $this->t('Must enter Gemini URL before selecting bundles to display a pseudo field on.')
       );
     }
-    
   }
 
   /**
